@@ -1,0 +1,27 @@
+
+.btn-item {
+    padding: 8px;
+    margin-left: 25px ;
+    cursor: pointer;
+    vertical-align: middle;
+    color: #FFFFFF;
+    border: none;
+    outline: none;
+
+}
+
+.edit {
+    background-color: #c2e80e;
+    border-radius: 4px;
+}
+
+.delete{
+    background-color: #18a0fb;
+    border-radius: 4px;
+}
+
+.trash:hover{
+    background-color: #388AC5;
+
+}
+
