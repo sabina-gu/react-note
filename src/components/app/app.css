@@ -41,8 +41,12 @@ body {
     font-size: 36px;
     font-weight: normal;
     text-align: center;
+}
 
-
-
+.no-notes{
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 24px;
+    color: #AAADB2;
 }
 

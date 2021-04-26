@@ -4,41 +4,22 @@ import './edit-note.css'
 
 const EditNote = (props) => {
 
-    const {onOpenEdit, note, updateNoteId,setTitle,setNote, setText ,noteText, noteTitle} = props;
+    const {onOpenEdit, idNote,setTitle,setNote, setText ,noteText, noteTitle} = props;
 
 
      const onSubmit = (e) => {
         e.preventDefault();
+        if (noteTitle.length ===0 || noteText.length === 0){
+             return false}
 
-
-
-        const idx = updateNoteId;
-
-
-
-         let nott = JSON.parse(localStorage.getItem('notes'))|| []
-
-         nott[idx].title = noteTitle;
-         nott[idx].content = noteText;
-
-
+         let nott = JSON.parse(localStorage.getItem('notes'))|| [];
+         nott[idNote].title = noteTitle;
+         nott[idNote].content = noteText;
 
          localStorage.setItem('notes',JSON.stringify(nott));
-
          const updatedNotes = localStorage.getItem('notes') ||[]
-
          setNote(JSON.parse(updatedNotes));
-
-         onOpenEdit();
-
-
-            };
-
-
-
-
-
-
+         onOpenEdit()};
 
 
 
@@ -51,15 +32,15 @@ const EditNote = (props) => {
 
             <input className='note-input title-create'
                    maxLength="20"
-                type="text"
-                   placeholder={note}
+                   type="text"
+                   placeholder='Title'
                    onChange={e => setTitle(e.target.value)}
                     value={noteTitle}/> <br/>
 
 
             <textarea type="text"
                    className='note-input content-create'
-                   placeholder={note}
+                   placeholder='Your note...'
                    onChange={e => setText(e.target.value)}
                    value={noteText}
                   />

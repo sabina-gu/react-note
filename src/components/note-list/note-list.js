@@ -5,17 +5,16 @@ import './note-list.css'
 const NoteList = (props) => {
 
 
-const {notes, onDeleted, onToggle, onEdit, onSubmit} = props;
+const {notes, onDeleted, onToggle, onEdit} = props;
 
     const elements = notes.map((item)=>{
 
         const {id, ...itemProps} = item;
 
 
-
         return (
             <li className='item-list' key={id} >
-                <NoteListItem  {...itemProps} onDeleted ={()=>  onDeleted(id)}  onToggle={()=> onToggle()} onEdit ={()=>onEdit(id)} onUpdate ={() =>onSubmit( id)}/></li>
+                <NoteListItem  {...itemProps} onDeleted ={()=>  onDeleted(id)}  onToggle={()=> onToggle()} onEdit ={()=>onEdit(id)} /></li>
         );
     });
 

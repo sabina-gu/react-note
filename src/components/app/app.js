@@ -11,26 +11,40 @@ import Button from "../button";
 import './app.css'
 
 
-
-
 const App = () => {
 
     const [notes, setNotes] = useState([]);  //создает пустой массив с заметками
 
+
+    let [idNote, setIdNote] = useState(null);          //сохраняет ID заметки
+
+
+
+
+
+
     const [isOpen, setOpen] = useState(false);   //открывает окно создания заметки
+
 
     const [isOpenEdit, setOpenEdit] = useState(false); //открывает окно редактирование заметки
 
-    const [isRequest, setRequest] = useState(false); //открывает окно confirmation
+    const [isConfirmation, setConfirmation] = useState(false); //открывает окно confirmation
 
 
-    let [updateNoteId, setUpdateNoteId] = useState([]);   //передает нужный ID компоненту EditNote
 
-    let [idNote, setIdNote] = useState([]);          //сохраняет ID заметки
+
+
+
+
+
 
     let [noteTitle, setTitle] = useState('');    //сохраняет заголовок
 
     let [noteText, setText] = useState('');    //сохраняет текст
+
+
+
+
 
 
 
@@ -45,24 +59,21 @@ const App = () => {
     }, []);                  //извлекает заметки из localStorage
 
 
-    const deleteItem = (id) => {
-        toggleRequest();
-        const idx = notes.findIndex((el)=>el.id ===id);
-        setIdNote(idx)
 
+    const findId = (id) => {
+        toggleConfirmation();
+        const idx = notes.findIndex((el)=>el.id ===id);
+        setIdNote(idx);
     };                                                        // передает ID для удаления в компоненте Confirmation
 
 
-    const editNoteTitle = (id) => {
-
+    const editNote = (id) => {
         toggleDialogEdit();
         const idx = notes.findIndex((el)=>el.id ===id);
         let note2 = JSON.parse(localStorage.getItem('notes'));
-        noteTitle = note2[idx].title;
-        noteText = note2[idx].content;
-        setUpdateNoteId(idx);
-        setTitle(noteTitle);
-        setText(noteText);
+        setIdNote(idx);
+        setTitle(note2[idx].title);
+        setText(note2[idx].content);
     };                                                   //редактирует заметку
 
 
@@ -75,20 +86,25 @@ const App = () => {
         setOpenEdit (!isOpenEdit);
     };                                                    //открывает окно редактирования заметки
 
-    const toggleRequest = () => {
-        setRequest(!isRequest)
+    const toggleConfirmation = () => {
+        setConfirmation(!isConfirmation)
     };                                                    //открывает окно confirmation
 
-    const createNote = (title, content) => {
-        return {
-            title,
-            content,
-            id: Date.now()
-        };
-    };                                                    //создает новую заметку
+
+
+
+
 
     const addNote = (title, content) => {
         toggleDialog();
+
+        const createNote = (title, content) => {
+            return {
+                title,
+                content,
+                id: Date.now()
+            };
+        };
         const newNote = createNote(title, content);
 
             const newArr = [
@@ -107,16 +123,18 @@ const App = () => {
                 <h1 className='note-title'>NOTES</h1>
                 <ErrorButton/>
                 </div>
-                <NoteList  notes={notes} onDeleted={deleteItem} onDialog = {toggleRequest} onToggle={toggleDialogEdit} onEdit={editNoteTitle} dialog={EditNote}/>
+                {notes.length ?  <NoteList  notes={notes} onDeleted={findId} onDialog = {toggleConfirmation} onToggle={toggleDialogEdit} onEdit={editNote} dialog={EditNote}/> :
+                    <p className='no-notes'>Add some note now!</p>}
+
                 <Button modal={toggleDialog}/>
 
                 {isOpen ? <CreateNote onOpen={toggleDialog}
                                   onAdded={addNote}/> : null}
 
                 {isOpenEdit ? <EditNote onOpenEdit={toggleDialogEdit} noteText={noteText} noteTitle={noteTitle}
-                                        notes={notes} setNote={setNotes} onEdit={editNoteTitle} updateNoteId ={updateNoteId} setTitle={setTitle} setText={setText}/> : null}
+                                        setNote={setNotes} idNote ={idNote} setTitle={setTitle} setText={setText}/> : null}
 
-                {isRequest ? <Confirmation onClose={toggleRequest} setNote={setNotes} idNote={idNote} notes={notes} onDeleted={deleteItem}/>: null}
+                {isConfirmation ? <Confirmation onClose={toggleConfirmation} setNote={setNotes} idNote={idNote} notes={notes} onDeleted={findId}/>: null}
 
             </div>
         </div>
